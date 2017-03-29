@@ -62,7 +62,7 @@
         roles: ['user']
       };
 
-      // Initialize the Articles controller.
+      // Initialize the venues controller.
       EditProfileController = $controller('EditProfileController as vm', {
         $scope: $scope
       });

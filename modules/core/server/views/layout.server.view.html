@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" ng-strict-di>
+
 <head>
+  <script src="http://maps.google.com/maps/api/js"></script>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
@@ -32,7 +35,8 @@
   <link href="/{{favicon}}" rel="shortcut icon" type="image/x-icon">
 
   <!-- Application CSS Files -->
-  {{#each cssFiles}}<link rel="stylesheet" href="/{{this}}">{{/each}}
+  {{#each cssFiles}}
+  <link rel="stylesheet" href="/{{this}}">{{/each}}
 </head>
 
 <body class="ng-cloak">
@@ -45,7 +49,11 @@
 
   <noscript>
     <style>
-      [ng\:cloak], [ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      [ng\:cloak],
+      [ng-cloak],
+      [x-ng-cloak],
+      .ng-cloak,
+      .x-ng-cloak {
         display: block !important;
       }
     </style>
@@ -64,8 +72,9 @@
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
   <!--Application JavaScript Files-->
-    {{#each jsFiles}}<script type="text/javascript" src="/{{this}}"></script>{{/each}}
-  
+  {{#each jsFiles}}
+  <script type="text/javascript" src="/{{this}}"></script>{{/each}}
+
   <!--owasp config sync-->
   <script type="text/javascript">
     var sharedConfig = {{{ sharedConfig }}};
