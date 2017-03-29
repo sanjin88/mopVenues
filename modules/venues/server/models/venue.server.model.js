@@ -10,25 +10,43 @@ var mongoose = require('mongoose'),
  * Venue Schema
  */
 var VenueSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
+  id: {
+    type: String,  // FourSquareID
+    unique: true
   },
-  title: {
+  name: {
     type: String,
     default: '',
     trim: true,
-    required: 'Title cannot be blank'
   },
-  content: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  user: {
+  users: [{
     type: Schema.ObjectId,
     ref: 'User'
+  }],
+  location: {
+    country: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    address: {
+      type: String
+    },
+    distance: {
+      type: Number
+    },
+    lat: {
+      type: Number
+    },
+    lng: {
+      type: Number
+    },
+  },
+  verified: {
+    type: Boolean
   }
+
 });
 
 mongoose.model('Venue', VenueSchema);

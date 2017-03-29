@@ -7,9 +7,17 @@
       <marker ng-repeat="ven in vm.venues" position="{{[ven.location.lat, ven.location.lng]}}" title="{{ven.name}}"></marker>
     </ng-map>
   </div>
+  <br>
+  <br>
+  <button class="btn btn-info" ng-click="vm.nearest = !vm.nearest" ng-if="vm.venues.length>0">Sort by: {{!vm.nearest? 'nearest' : 'farthest'}}</button>
+  <br>
+  <br>
   <div class="list-group">
-    <a ng-repeat="venue in vm.venues | orderBy: 'location.distance'" ui-sref="venues.view({ venueId: venue._id })">
+    <span ng-repeat="venue in vm.venues | orderBy:'location.distance':!vm.nearest">
+      <div class="clearfix" ng-if="$index % 6 == 0" style="margin: 10px"></div>
       <venue venue="venue"></venue>
-    </a>
+    </span>
   </div>
 </section>
+
+<!--ui-sref="venues.view({ venueId: venue._id })"-->

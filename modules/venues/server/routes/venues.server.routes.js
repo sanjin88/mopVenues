@@ -10,7 +10,7 @@ module.exports = function (app) {
   // Venues collection routes
   app.route('/api/venues').all(venuesPolicy.isAllowed)
     .get(venues.list)
-    .post(venues.create);
+    .post(venues.createOrUpdate);
 
   // Single venue routes
   app.route('/api/venues/:venueId').all(venuesPolicy.isAllowed)

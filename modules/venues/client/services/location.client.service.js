@@ -5,21 +5,29 @@
         .module('venues.services')
         .service('LocationService', LocationService);
 
-    LocationService.$inject = ['$q', '$log'];
+    LocationService.$inject = ['$q', '$log', '$state', '$http'];
 
-    function LocationService($q, $log) {
+    function LocationService($q, $log, $state, $http) {
 
         var service = this;
+        service.defer = null;
+
         service.getLocation = getLocation;
 
+        // Sarajevo ltd lng
+        var sarajevoCrd = {
+            latitude: '43.84864',
+            longitude: '18.35644'
+        }
+
         // Handle successful response
-        function onSuccess(venue) {
-            // Any required internal processing from inside the service, goes here.
+        function onSuccess(from) {
+            $log.info("Success getting location from ", from)
         }
 
         // Handle error response
         function onError(errorResponse) {
-            var error = errorResponse.data;
+            var error = errorResponse;
             // Handle error internally
             handleError(error);
         }
@@ -28,41 +36,86 @@
             $log.error(error);
         }
 
+        function getDefer() {
+            if (service.defer === null) {
+                console.log(service.defer)
+                service.defer = $q.defer();
+            }
+
+        }
 
         function getLocation() {
-            
-            var defer = $q.defer();
+            getDefer();
+            // if it is already resolved return promise
+            if (service.defer.promise.$$state.status === 1) {
+                return service.defer.promise;
+            } else {
+                return getLocationFromNavigator();
+            }
+        }
 
-if(service.location){
-    defer.resolve(service.location);
-     return defer.promise;
-}
+        function getLocationFromNavigator() {
+
             var options = {
                 enableHighAccuracy: true,
                 timeout: 5000,
                 maximumAge: 0
             };
 
-            function success(pos) {
-                onSuccess(pos)
+            function navigatorSuccess(pos) {
+                onSuccess("HTML5 navigator")
                 var crd = pos.coords;
-                service.location = crd;
-                defer.resolve(crd)
+                service.defer.resolve(crd)
             };
 
-            function error(err) {
+            function navigatorError(err) {
                 onError(err.message);
-                var crd = {  // Sarajevo ltd lng
-                    latitude: '43.84864',
-                    longitude: '18.35644'
+
+                if (confirm("Unable to get current location, do you want to try get location from ipinfo.io")) {
+                    console.log("GET FROM IIPINFO")
+                    getLocationFromIpInfo();
+                } else {
+                    $state.go('home')
+                    service.defer.reject();
                 }
-                defer.reject(crd)
             };
 
-            navigator.geolocation.getCurrentPosition(success, error, options);
+            navigator.geolocation.getCurrentPosition(navigatorSuccess, navigatorError, options);
 
-            return defer.promise;
+            return service.defer.promise;
         }
+
+        function getLocationFromIpInfo() {
+
+            function ipinfoSuccess(resp) {
+                onSuccess("ipinf.io")
+                var crdArr = resp.loc.split(",");
+                var crd = {
+                    latitude: crdArr[0],
+                    longitude: crdArr[1]
+                }
+                service.defer.resolve(crd)
+            };
+
+            function ipinfoError(err) {
+                onError(err);
+                if (confirm("Unable to get current location, do you want venues near Sarajevo instead?")) {
+                    service.defer.resolve(sarajevoCrd)
+                } else {
+                    $state.go('home')
+                    service.defer.reject();
+                }
+            };
+            $http.get("http://ipinfo.io").then(function (resp) {
+                ipinfoSuccess(resp.data);
+            }, function (err) {
+                ipinfoError(err);
+            })
+
+            return service.defer.promise;
+        }
+
+
 
         return service;
     }

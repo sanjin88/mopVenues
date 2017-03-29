@@ -9,22 +9,62 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create an venue
+ * Create or update an venue
  */
-exports.create = function (req, res) {
-  var venue = new Venue(req.body);
-  venue.user = req.user;
+exports.createOrUpdate = function (req, res) {
+  Venue.findOne({ id: req.body.id }).populate('users').exec(function (err, existingVenue) {
+    var tagged;
+    if (err) {
+      return res.status(404).send({
+        message: 'No venue with that identifier has been found'
+      });
+    } else if (!existingVenue) {
+      createNewVenue(req, res)
+    } else {
+      updateVenue(req, res, existingVenue);
+    }
+  });
+};
 
+// Save new venue with user
+function createNewVenue() {
+  var venue = new Venue(req.body);
+  var tagged;
+  venue.users = [];
+  venue.users.push(req.user);
   venue.save(function (err) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(venue);
+      tagged = true;
+      res.json({ venue: venue, tagged: tagged });
     }
   });
-};
+}
+
+// Ad or remove user from existingVenue reference list
+function updateVenue(req, res, existingVenue) {
+  var tagged;
+  var userIndex = getIndexOfUserFromList(existingVenue.users, req.user._id, '_id');
+  if (userIndex > -1) {
+    existingVenue.users.splice(userIndex);
+    tagged = false;
+  } else {
+    existingVenue.users.push(req.user);
+    tagged = true;
+  }
+  existingVenue.save(function (err) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json({ venue: existingVenue, tagged: tagged });
+    }
+  });
+}
 
 /**
  * Show the current venue
@@ -115,3 +155,16 @@ exports.venueByID = function (req, res, next, id) {
     next();
   });
 };
+
+/**
+ * Helpers
+ */
+
+function getIndexOfUserFromList(users, value, property) {
+  for (var i = 0; i < users.length; i++) {
+    if (users[i][property].toString() === value.toString()) {
+      return i;
+    }
+  }
+  return -1;
+}

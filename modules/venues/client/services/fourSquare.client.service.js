@@ -14,8 +14,8 @@
         service.getVenuesFromFourSquare = getVenuesFromFourSquare;
 
         // Handle successful response
-        function onSuccess(venue) {
-            // Any required internal processing from inside the service, goes here.
+        function onSuccess(message) {
+            $log.info(message)
         }
 
         // Handle error response
@@ -32,17 +32,10 @@
         function getVenuesFromFourSquare() {
             var defer = $q.defer();
             getLocation().then(function (response) {
-                console.log(response)
                 defer.resolve(getVenues(response));
             }, function (err) {
                 onError(err);
-                var r = confirm("Unable to get current location, do you want venues near Sarajevo instead?");
-                if (r == true) {
-                    defer.resolve(getVenues(err));
-                } else {
-                    $state.go('home')
-                    defer.reject();
-                }
+                defer.resolve(getVenues(err));
             })
             return defer.promise;
         }
