@@ -3,7 +3,9 @@
     <h1>Venues</h1>
   </div>
   <div>
-    <ng-map center="[40.74, -74.18]"></ng-map>
+    <ng-map center="{{vm.map.center}}">
+      <marker ng-repeat="ven in vm.venues" position="{{[ven.location.lat, ven.location.lng]}}" title="{{ven.name}}"></marker>
+    </ng-map>
   </div>
   <div class="list-group">
     <a ng-repeat="venue in vm.venues | orderBy: 'location.distance'" ui-sref="venues.view({ venueId: venue._id })">

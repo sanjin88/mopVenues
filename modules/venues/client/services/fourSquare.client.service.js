@@ -32,6 +32,7 @@
         function getVenuesFromFourSquare() {
             var defer = $q.defer();
             getLocation().then(function (response) {
+                console.log(response)
                 defer.resolve(getVenues(response));
             }, function (err) {
                 onError(err);
@@ -58,7 +59,8 @@
                 client_secret: FOURSQUARE_SECRET,
                 v: FOURSQUARE_VERSIONING,
                 sortByDistance: 1,
-                limit: 50
+                limit: 50,
+                radius: 5000
             }
 
             $http({

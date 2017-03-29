@@ -10,7 +10,6 @@
     function LocationService($q, $log) {
 
         var service = this;
-
         service.getLocation = getLocation;
 
         // Handle successful response
@@ -31,8 +30,13 @@
 
 
         function getLocation() {
+            
             var defer = $q.defer();
 
+if(service.location){
+    defer.resolve(service.location);
+     return defer.promise;
+}
             var options = {
                 enableHighAccuracy: true,
                 timeout: 5000,
@@ -42,6 +46,7 @@
             function success(pos) {
                 onSuccess(pos)
                 var crd = pos.coords;
+                service.location = crd;
                 defer.resolve(crd)
             };
 
