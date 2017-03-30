@@ -10,7 +10,7 @@ module.exports = {
         'public/lib/angular-ui-notification/dist/angular-ui-notification.min.css',
         'public/lib/bootstrap/dist/css/bootstrap.min.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
-        'public/lib/sweetalert/dist/sweetalert.css'
+        'public/lib/sweetalert/dist/sweetalert.css',
         // endbower
       ],
       js: [
@@ -26,8 +26,8 @@ module.exports = {
         'public/lib/ng-file-upload/ng-file-upload.min.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         'public/lib/ngmap/build/scripts/ng-map.min.js',
-        'public/lib/sweetalert/dis/sweetalert.min.js',
-        'public/lib/ngSweetAlert/SweetAlert.min.js'
+        'public/lib/sweetalert/dist/sweetalert.min.js',
+        'public/lib/ngSweetAlert/SweetAlert.min.js',
         // endbower
       ]
     },
