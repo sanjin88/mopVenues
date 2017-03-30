@@ -121,7 +121,7 @@ exports.delete = function (req, res) {
  * List of Venues
  */
 exports.list = function (req, res) {
-  Venue.find().sort('-created').populate('user', 'displayName').exec(function (err, venues) {
+  Venue.find().populate('user', 'displayName').exec(function (err, venues) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
@@ -136,7 +136,7 @@ exports.list = function (req, res) {
  * List of user Venues
  */
 exports.userList = function (req, res) {
-  Venue.find().populate('users').find({ 'users' : req.user._id }).sort('-created').populate('users').exec(function (err, venues) {
+  Venue.find().populate('users').find({ 'users' : req.user._id }).populate('users').exec(function (err, venues) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
