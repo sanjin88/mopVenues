@@ -39,7 +39,7 @@
         controller: 'ErrorController',
         controllerAs: 'vm',
         params: {
-          message: function($stateParams) {
+          message: function ($stateParams) {
             return $stateParams.message;
           }
         },
@@ -54,7 +54,7 @@
         controller: 'ErrorController',
         controllerAs: 'vm',
         params: {
-          message: function($stateParams) {
+          message: function ($stateParams) {
             return $stateParams.message;
           }
         },
@@ -69,6 +69,34 @@
         data: {
           ignoreState: true,
           pageTitle: 'Forbidden'
+        }
+      }).state('searchUsers', {
+        url: '/searchUsers',
+        templateUrl: '/modules/core/client/views/search-users.client.view.html',
+        controller: 'SearchUsersController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Search users'
+        },
+        resolve: {
+          resolve: function (FourSquareService, $state, $q) {
+            var defer = $q.defer();
+            if (!localStorage.getItem('fourSquareToken')) {
+              FourSquareService.logIn();
+            //  $state.go('home')
+            }else{
+              defer.resolve();
+            }
+            return defer.promise;
+          }
+        }
+      }).state('assignFourSquareToken', {
+        url: '/assignFourSquareToken',
+        controller: function ($stateParams, $state) {
+          var token = window.location.hash.substr(1).split('=')[1];
+          localStorage.setItem('fourSquareToken', token);
+          angular.module('core').constant('FOURSQUARE_ACCESS_TOKEN', token)
+          $state.go('home')
         }
       });
   }

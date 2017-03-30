@@ -1,0 +1,36 @@
+<section>
+    <div class="col-xs-12">
+        <h2>Find users...</h2>
+        <div class="row">
+            <div class="form-group col-xs-4">
+                <input type="text" class="form-control" placeholder="Search by twitter handle" ng-model="vm.searchParams.twitter" ng-change="vm.getUsers('handle')"
+                    ng-model-options="{ debounce: 900 }">
+            </div>
+            <div class="form-group col-xs-4">
+                <input type="text" class="form-control" placeholder="Search by twitter source" ng-model="vm.searchParams.twitterSource" ng-change="vm.getUsers('source')"
+                    ng-model-options="{ debounce: 900 }">
+            </div>
+            <div class="form-group col-xs-4">
+                <input type="text" class="form-control" placeholder="Search by name" ng-model="vm.searchParams.name" ng-change="vm.getUsers('name')"
+                    ng-model-options="{ debounce: 900 }">
+            </div>
+        </div>
+        <div class="list-group">
+            <span ng-repeat="user in vm.users">
+      <div class="clearfix" ng-if="$index % 6 == 0" style="margin: 10px"></div>
+<div class="card col-xs-2">
+      <img class="card-img-top" ng-src="{{user.photo.prefix}}width120{{user.photo.suffix}}" style="border-radius: 15px" alt="Card image cap">
+    <div class="card-block">
+        <h4 class="card-title">{{user.firstName}} {{user.lastName}}</h4>
+        <p class="card-text">
+            <span ng-if="user.homeCity">  {{user.homeCity}}  <br></span>
+            </p>
+            <a href="https://www.facebook.com/{{user.contact.facebook}}" ng-if="user.contact.facebook" target="_blank"><img style="max-width: 32px" src="https://cdn3.iconfinder.com/data/icons/inside/PNG/256x256/icontexto-inside-facebook.png"></a>
+            <a href="https://www.twitter.com/{{user.contact.twitter}}" ng-if="user.contact.twitter" target="_blank"><img style="max-width: 32px" src="https://cdn3.iconfinder.com/data/icons/inside/PNG/128x128/icontexto-inside-twitter.png"></a>
+        </div>
+    </div>
+
+    </span>
+    </div>
+    </div>
+</section>

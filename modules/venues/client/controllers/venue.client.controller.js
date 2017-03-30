@@ -18,7 +18,7 @@
       var e = $event
       var x = e.screenX - 100;
       var y = e.screenY - 150;
-      console.log(e)
+      
       var message = vm.venue.name + ' in ';
       if (vm.venue.location.address) {
         message = message + vm.venue.location.address + ' ';

@@ -7,9 +7,9 @@
     .module('users.services')
     .factory('Authentication', Authentication);
 
-  Authentication.$inject = ['$window', '$state', '$http', '$location', '$q', 'UsersService'];
+  Authentication.$inject = ['$window', '$state', '$http', '$location', '$q', 'UsersService', 'FourSquareService'];
 
-  function Authentication($window, $state, $http, $location, $q, UsersService) {
+  function Authentication($window, $state, $http, $location, $q, UsersService, FourSquareService) {
 
     var auth = {
       user: null,
@@ -27,13 +27,17 @@
 
     function init() {
       var token = localStorage.getItem('token') || $location.search().token || null;
+      var fsToken = localStorage.getItem('fourSquareToken') || null;
+
       // Remove the token from the URL if present
       $location.search('token', null);
 
       if (token) {
         auth.token = token;
         $http.defaults.headers.common.Authorization = 'JWT ' + token;
-
+        if (fsToken) {
+          angular.module('core').constant('FOURSQUARE_ACCESS_TOKEN', fsToken)
+        }
         refresh();
       } else {
         auth.ready.resolve();
@@ -48,12 +52,17 @@
       $http.defaults.headers.common.Authorization = 'JWT ' + token;
 
       auth.ready.resolve();
+      FourSquareService.logIn();
     }
+
+
 
     function signout() {
       localStorage.removeItem('token');
+      localStorage.removeItem('fourSquareToken');
       auth.user = null;
       auth.token = null;
+      angular.module('core').constant('FOURSQUARE_ACCESS_TOKEN', null);
 
       $state.go('home', { reload: true });
     }

@@ -8,6 +8,13 @@
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(menuService) {
+
+    menuService.addMenuItem('topbar', {
+      title: 'Search users',
+      state: 'searchUsers',
+      roles: ['user']
+    });
+
     menuService.addMenu('account', {
       roles: ['user']
     });

@@ -5,11 +5,13 @@
         .module('venues.services')
         .factory('FourSquareService', FourSquareService);
 
-    FourSquareService.$inject = ['$http', 'FOURSQUARE_SEARCH_VENUES_API', 'FOURSQUARE_ID', 'FOURSQUARE_SECRET', 'FOURSQUARE_VERSIONING', '$q', '$state', '$log', 'LocationService'];
+    FourSquareService.$inject = ['$http', 'FOURSQUARE_SEARCH_VENUES_API', 'FOURSQUARE_AUTHENTICATE_API', 'FOURSQUARE_ID', 'FOURSQUARE_SECRET', 'FOURSQUARE_VERSIONING', 'FOURSQUARE_REDIRECT_URL', '$q', '$state', '$log', 'LocationService', 'SweetAlert'];
 
-    function FourSquareService($http, FOURSQUARE_SEARCH_VENUES_API, FOURSQUARE_ID, FOURSQUARE_SECRET, FOURSQUARE_VERSIONING, $q, $state, $log, LocationService) {
+    function FourSquareService($http, FOURSQUARE_SEARCH_VENUES_API, FOURSQUARE_AUTHENTICATE_API, FOURSQUARE_ID, FOURSQUARE_SECRET, FOURSQUARE_VERSIONING, FOURSQUARE_REDIRECT_URL, $q, $state, $log, LocationService, SweetAlert) {
 
         var service = this;
+
+        service.logIn = logIn;
 
         service.getVenuesFromFourSquare = getVenuesFromFourSquare;
 
@@ -73,6 +75,27 @@
             });
 
             return defer.promise;
+        }
+
+        function logIn() {
+            SweetAlert.swal({
+                title: "It is needed to login to FourSuare.com",
+                text: "Some app features require FourSquare authentication",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#5bc0de",
+                confirmButtonText: "Go to FourSquare.com!",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    var url = FOURSQUARE_AUTHENTICATE_API
+                        + "?client_id=" + FOURSQUARE_ID
+                        + "&response_type=token&redirect_uri="
+                        + FOURSQUARE_REDIRECT_URL;
+                    window.location.replace(url)
+                }
+            });
         }
 
         return service
