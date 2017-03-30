@@ -60,12 +60,12 @@ module.exports = {
     sandbox: true
   },
   mailer: {
-    from: process.env.MAILER_FROM || 'sanjin.kapetanovich@gmail.com',
+    from: process.env.MAILER_FROM || 'mopvenueassign@gmail.com',
     options:{
     service: process.env.MAILER_SERVICE_PROVIDER || "gmail",
     auth: {
-        user: process.env.MAILER_EMAIL_ID || "sanjin.kapetanovich@gmail.com",
-        pass:  process.env.MAILER_PASSWORD ||"makemyday88"
+        user: process.env.MAILER_EMAIL_ID || "mopvenueassign@gmail.com",
+        pass:  process.env.MAILER_PASSWORD ||"mopvenueassign1234,."
     }
 }
   },

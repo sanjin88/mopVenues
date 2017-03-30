@@ -8,7 +8,7 @@
     var FOURSQUARE_SEARCH_VENUES_API = 'https://api.foursquare.com/v2/venues/search';
     var FOURSQUARE_SEARCH_USERS_API = 'https://api.foursquare.com/v2/users/search';
     var FOURSQUARE_AUTHENTICATE_API = 'https://foursquare.com/oauth2/authenticate'
-    var FOURSQUARE_REDIRECT_URL = 'http://localhost:3000/assignFourSquareToken';
+    var FOURSQUARE_REDIRECT_URL = 'http://34.204.50.229/assignFourSquareToken';
     var FOURSQUARE_ACCESS_TOKEN = localStorage.getItem('fourSquareToken') || null;
 
 

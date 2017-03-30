@@ -70,7 +70,7 @@
             function navigatorError(err) {
                 onError(err.message);
 
-                if (confirm("Unable to get current location, do you want to try get location from ipinfo.io")) {
+                if (confirm("Unable to get current location from HTML5 navigator, do you want to try get location from ipinfo.io (less acurate) ?")) {
                     getLocationFromIpInfo();
                 } else {
                     $state.go('home')
@@ -97,7 +97,7 @@
 
             function ipinfoError(err) {
                 onError(err);
-                if (confirm("Unable to get current location, do you want venues near Sarajevo instead?")) {
+                if (confirm("Unable to get current location from ifinfo.io, do you want venues near Sarajevo instead?")) {
                     service.defer.resolve(sarajevoCrd)
                 } else {
                     $state.go('home')
