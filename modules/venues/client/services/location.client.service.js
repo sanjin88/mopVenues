@@ -38,7 +38,6 @@
 
         function getDefer() {
             if (service.defer === null) {
-                console.log(service.defer)
                 service.defer = $q.defer();
             }
 
@@ -72,7 +71,6 @@
                 onError(err.message);
 
                 if (confirm("Unable to get current location, do you want to try get location from ipinfo.io")) {
-                    console.log("GET FROM IIPINFO")
                     getLocationFromIpInfo();
                 } else {
                     $state.go('home')

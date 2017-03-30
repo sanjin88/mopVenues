@@ -17,17 +17,17 @@
             this.users = initialData.users || [];
             this.verified = initialData.verified || false;
             this.tagged = initialData.tagged || false;
+            this.public = initialData.public || false;
         }
 
 
         Venue.prototype.tag = function () {
             var venue = this;
             VenuesService.createOrUpdate(venue).then(function (resp) {
-                console.log(resp)
                 Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Tag update successful!' });
                 venue.tagged = resp.data.tagged;
             }, function (resp) {
-                Notification.error({ message: resp.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Tagging Error!', delay: 6000 });
+                Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Tagging Error!', delay: 6000 });
             })
         }
 

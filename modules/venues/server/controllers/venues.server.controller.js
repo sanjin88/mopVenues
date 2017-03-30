@@ -27,7 +27,7 @@ exports.createOrUpdate = function (req, res) {
 };
 
 // Save new venue with user
-function createNewVenue() {
+function createNewVenue(req, res) {
   var venue = new Venue(req.body);
   var tagged;
   venue.users = [];
@@ -122,6 +122,21 @@ exports.delete = function (req, res) {
  */
 exports.list = function (req, res) {
   Venue.find().sort('-created').populate('user', 'displayName').exec(function (err, venues) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(venues);
+    }
+  });
+};
+
+/**
+ * List of user Venues
+ */
+exports.userList = function (req, res) {
+  Venue.find().populate('users').find({ 'users' : req.user._id }).sort('-created').populate('users').exec(function (err, venues) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)

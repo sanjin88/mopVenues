@@ -17,7 +17,12 @@ exports.invokeRolesPolicies = function () {
     allows: [{
       resources: '/api/venues',
       permissions: ['*']
-    }, {
+    },
+    {
+      resources: '/api/userVenues',
+      permissions: ['*']
+    },
+    {
       resources: '/api/venues/:venueId',
       permissions: ['*']
     }]

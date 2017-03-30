@@ -1,23 +1,37 @@
 <section>
-  <div class="page-header">
-    <h1>Venues</h1>
-  </div>
   <div>
     <ng-map center="{{vm.map.center}}">
       <marker ng-repeat="ven in vm.venues" position="{{[ven.location.lat, ven.location.lng]}}" title="{{ven.name}}"></marker>
     </ng-map>
   </div>
+  <p>*Application tries to get current location from HTML5 navigator and ipinfo.io, if thoose server fails or browser has not
+    support it loads Sarajevo coordinates</p>
   <br>
-  <br>
-  <button class="btn btn-info" ng-click="vm.nearest = !vm.nearest" ng-if="vm.venues.length>0">Sort by: {{!vm.nearest? 'nearest' : 'farthest'}}</button>
-  <br>
-  <br>
+  <div class="row">
+    <div class="form-group col-xs-4">
+      <input type="text" class="form-control" placeholder="Search Venues" ng-model="vm.searchParams.searchString" ng-change="vm.getVenues()"
+        ng-model-options="{ debounce: 900 }">
+    </div>
+    <div class="form-group col-xs-2">
+      <input type="number" class="form-control" placeholder="Range" ng-model="vm.searchParams.radius" ng-change="vm.getVenues()"
+        ng-model-options="{ debounce: 900 }">
+    </div>
+  </div>
+  <div class="row" ng-if="vm.venues.length>0 && filtered.length>0">
+    <div class="col-xs-12">
+      <label>Sort by: </label>
+      <button class="btn btn-info" ng-click="vm.orderBy('distance')" ng-if="vm.venues.length>0"> {{vm.order.distance? 'Nearest' : 'Farthest'}}</button>
+      <button class="btn btn-info" ng-click="vm.orderBy('popularity')" ng-if="vm.venues.length>0">{{!vm.order.popularity? 'Most tagged' : 'Least tagged'}}</button>
+      <br>
+      <br>
+      <p>*Currently showing {{vm.order.title}} venues matching search query</p>
+      <br>
+    </div>
+  </div>
   <div class="list-group">
-    <span ng-repeat="venue in vm.venues | orderBy:'location.distance':!vm.nearest">
+    <span ng-repeat="venue in vm.venues | orderBy:vm.order.rule | filter: vm.searchParams.searchString as filtered">
       <div class="clearfix" ng-if="$index % 6 == 0" style="margin: 10px"></div>
       <venue venue="venue"></venue>
     </span>
   </div>
 </section>
-
-<!--ui-sref="venues.view({ venueId: venue._id })"-->

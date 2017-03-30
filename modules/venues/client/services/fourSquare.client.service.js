@@ -29,10 +29,10 @@
             $log.error(error);
         }
 
-        function getVenuesFromFourSquare() {
+        function getVenuesFromFourSquare(searchParams) {
             var defer = $q.defer();
             getLocation().then(function (response) {
-                defer.resolve(getVenues(response));
+                defer.resolve(getVenues(response, searchParams));
             }, function (err) {
                 onError(err);
                 defer.resolve(getVenues(err));
@@ -44,7 +44,7 @@
             return LocationService.getLocation();
         }
 
-        function getVenues(crd) {
+        function getVenues(crd, searchParams) {
             var defer = $q.defer();
             var params = {
                 ll: crd.latitude + ',' + crd.longitude,
@@ -53,7 +53,9 @@
                 v: FOURSQUARE_VERSIONING,
                 sortByDistance: 1,
                 limit: 50,
-                radius: 5000
+                query: searchParams.searchString || '',
+                radius: searchParams.radius || 5000,
+                intent: 'browse'
             }
 
             $http({

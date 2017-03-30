@@ -12,14 +12,14 @@
       title: 'Venues',
       state: 'venues',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['user']
     });
 
     // Add the dropdown list item
     menuService.addSubMenuItem('topbar', 'venues', {
-      title: 'List Venues',
+      title: 'Browse Venues',
       state: 'venues.list',
-      roles: ['*']
+      roles: ['user']
     });
   }
 }());

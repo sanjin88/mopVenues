@@ -5,12 +5,15 @@
             <span ng-if="venueClientDirectiveCtrl.venue.location.address">   Address: {{venueClientDirectiveCtrl.venue.location.address}}  <br></span>
             <span ng-if="venueClientDirectiveCtrl.venue.location.city">     City: {{venueClientDirectiveCtrl.venue.location.city}}    <br> </span>
             <span ng-if="venueClientDirectiveCtrl.venue.location.country">      Country: {{venueClientDirectiveCtrl.venue.location.country}}  <br></span>
-            <span ng-if="venueClientDirectiveCtrl.venue.location.distance">     Distance: {{venueClientDirectiveCtrl.venue.location.distance}}  <br></span>
+            <span ng-if="venueClientDirectiveCtrl.venue.location.distance">     Distance: {{venueClientDirectiveCtrl.venue.location.distance}} meters  <br></span>
+            <span>     Tagged: {{venueClientDirectiveCtrl.venue.users.length}} times  <br></span>
             <span>Verified:   <img style="max-width: 13px" src="https://cdn1.iconfinder.com/data/icons/ui-5/502/check-512.png" ng-if="venueClientDirectiveCtrl.venue.verified">
             <img style="max-width: 13px" src="http://www.myiconfinder.com/uploads/iconsets/256-256-4509ba2b6663b1e81748e24eb16204d2-cross.png" ng-if="!venueClientDirectiveCtrl.venue.verified"></span>
         </p>
-        <a href="#" class="btn btn-success" ng-if="!venueClientDirectiveCtrl.venue.tagged" ng-click="venueClientDirectiveCtrl.venue.tag()">Tag</a>
-        <a href="#" class="btn btn-danger" ng-if="venueClientDirectiveCtrl.venue.tagged" ng-click="venueClientDirectiveCtrl.venue.tag()">Untag</a>
-        <a href="#" class="btn btn-info"><img style="max-width: 21px" src="http://icons.veryicon.com/png/System/Windows%208%20Metro/Web%20Twitter%20alt%201%20Metro.png">            Tweet</a>
+        <div ng-if="!venueClientDirectiveCtrl.venue.public">
+            <a href="#" class="btn btn-success" ng-if="!venueClientDirectiveCtrl.venue.tagged" ng-click="venueClientDirectiveCtrl.venue.tag()">Tag</a>
+            <a href="#" class="btn btn-danger" ng-if="venueClientDirectiveCtrl.venue.tagged" ng-click="venueClientDirectiveCtrl.venue.tag()">Untag</a>
+            <a href="#" ng-click="venueClientDirectiveCtrl.tweetAbout($event)" class="btn btn-info"><img style="max-width: 21px" src="http://icons.veryicon.com/png/System/Windows%208%20Metro/Web%20Twitter%20alt%201%20Metro.png">Tweet</a>
+        </div>
     </div>
 </div>
