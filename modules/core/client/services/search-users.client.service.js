@@ -30,7 +30,7 @@
         }
 
         function getUsers(searchParams) {
-            var token = FOURSQUARE_ACCESS_TOKEN;
+            var token = FOURSQUARE_ACCESS_TOKEN || localStorage.getItem('fourSquareToken');
             var defer = $q.defer();
             var params = {
                 oauth_token: token,
