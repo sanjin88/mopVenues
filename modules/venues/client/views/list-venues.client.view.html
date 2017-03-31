@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="list-group">
-    <span ng-repeat="venue in vm.venues | orderBy:vm.order.rule | filter: vm.searchParams.searchString as filtered">
+    <span ng-repeat="venue in vm.venues | orderBy:vm.order.rule">
       <div class="clearfix" ng-if="$index % 6 == 0" style="margin: 10px"></div>
       <venue venue="venue"></venue>
     </span>
